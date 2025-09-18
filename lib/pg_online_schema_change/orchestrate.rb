@@ -223,13 +223,14 @@ module PgOnlineSchemaChange
         )
 
         @copy_finished = false
-        log_progress
+        # log_progress
 
         sql = Query.copy_data_statement(client, shadow_table, true)
         Query.run(client.connection, sql, true)
       ensure
         Query.run(client.connection, "COMMIT;") # commit the serializable transaction
         @copy_finished = true
+        logger.info("FINISHED")
       end
 
       def log_progress
